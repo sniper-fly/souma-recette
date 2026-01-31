@@ -1,0 +1,5 @@
+{
+  "name": "prompt-optimization",
+  "version": "1.0.0",
+  "description": "モデル非依存のプロンプト分析・最適化パターン（BP-001〜BP-008）"
+}

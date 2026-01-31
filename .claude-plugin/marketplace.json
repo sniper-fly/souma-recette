@@ -1,0 +1,133 @@
+{
+  "name": "souma-recipe",
+  "owner": {
+    "name": "sniper-fly",
+    "email": "50983271+sniper-fly@users.noreply.github.com"
+  },
+  "metadata": {
+    "description": "Claude Code plugin marketplace - Collection of custom plugins",
+    "version": "1.0.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "mirariko",
+      "source": "./plugins/mirariko",
+      "description": "スキルベースの実装計画書レビュー＆ブラッシュアップの反復ワークフロー",
+      "version": "1.0.0",
+      "author": {
+        "name": "sniper-fly"
+      },
+      "category": "productivity",
+      "keywords": [
+        "review",
+        "planning",
+        "workflow",
+        "iterative"
+      ],
+      "tags": [
+        "review",
+        "planning"
+      ]
+    },
+    {
+      "name": "gemini-search",
+      "source": "./plugins/gemini-search",
+      "description": "Gemini CLIのGoogle Search Grounding機能でWeb検索を実行",
+      "version": "1.0.0",
+      "author": {
+        "name": "sniper-fly"
+      },
+      "category": "search",
+      "keywords": [
+        "gemini",
+        "search",
+        "google",
+        "web"
+      ],
+      "tags": [
+        "search",
+        "gemini"
+      ]
+    },
+    {
+      "name": "prompt-optimization",
+      "source": "./plugins/prompt-optimization",
+      "description": "モデル非依存のプロンプト分析・最適化パターン（BP-001〜BP-008）",
+      "version": "1.0.0",
+      "author": {
+        "name": "sniper-fly"
+      },
+      "category": "productivity",
+      "keywords": [
+        "prompt",
+        "optimization",
+        "analysis"
+      ],
+      "tags": [
+        "prompt",
+        "optimization"
+      ]
+    },
+    {
+      "name": "skill-development",
+      "source": "./plugins/skill-development",
+      "description": "Claude Codeプラグイン用スキル作成のベストプラクティス",
+      "version": "1.0.0",
+      "author": {
+        "name": "sniper-fly"
+      },
+      "category": "development",
+      "keywords": [
+        "skill",
+        "development",
+        "plugin",
+        "claude-code"
+      ],
+      "tags": [
+        "skill",
+        "development"
+      ]
+    },
+    {
+      "name": "terraform-review",
+      "source": "./plugins/terraform-review",
+      "description": "Terraformコードの本番デプロイ前レビュー",
+      "version": "1.0.0",
+      "author": {
+        "name": "sniper-fly"
+      },
+      "category": "infrastructure",
+      "keywords": [
+        "terraform",
+        "review",
+        "infrastructure",
+        "iac"
+      ],
+      "tags": [
+        "terraform",
+        "review"
+      ]
+    },
+    {
+      "name": "security-scanner",
+      "source": "./plugins/security-scanner",
+      "description": "リポジトリ全体のマルウェア・悪意コードパターン検出",
+      "version": "1.0.0",
+      "author": {
+        "name": "sniper-fly"
+      },
+      "category": "security",
+      "keywords": [
+        "security",
+        "malware",
+        "scanner",
+        "code-review"
+      ],
+      "tags": [
+        "security",
+        "scanner"
+      ]
+    }
+  ]
+}

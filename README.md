@@ -12,24 +12,35 @@
 
 ## 含まれるプラグイン
 
-### example-commands
-カスタムスラッシュコマンドのサンプルプラグイン
+### prompt-optimization
+モデル非依存のプロンプト分析・最適化パターン（BP-001〜BP-008）
 
-- `/hello` - シンプルな挨拶コマンド
-- `/summarize` - ファイルの要約コマンド
+### security-scanner
+リポジトリ全体のマルウェア・悪意コードパターン検出
 
-### example-agent
-カスタムエージェントのサンプルプラグイン
+### mirariko
+スキルベースの実装計画書レビュー＆ブラッシュアップの反復ワークフロー
 
-- `code-reviewer` - コードレビュー用エージェント
+### terraform-review
+Terraformコードの本番デプロイ前レビュー
+
+### skill-development
+Claude Codeプラグイン用スキル作成のベストプラクティス
+
+### gemini-search
+Gemini CLIのGoogle Search Grounding機能でWeb検索を実行
 
 ## プラグインのインストール
 
 マーケットプレイスを追加後、個別のプラグインをインストール:
 
 ```bash
-/plugin install example-commands@souma-recette
-/plugin install example-agent@souma-recette
+/plugin install prompt-optimization@souma-recette
+/plugin install security-scanner@souma-recette
+/plugin install mirariko@souma-recette
+/plugin install terraform-review@souma-recette
+/plugin install skill-development@souma-recette
+/plugin install gemini-search@souma-recette
 ```
 
 ## 新しいプラグインの追加方法

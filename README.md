@@ -1,11 +1,13 @@
-# Souma Recipe - Claude Code Plugin Marketplace
+# Souma Recette - Claude Code Plugin Marketplace
 
 このリポジトリはClaude Codeのプラグインマーケットプレイスです。複数のプラグインを格納し、チームやコミュニティで共有できます。
+
+> *プラグインはルセットであり、技である。あらゆるものを貪欲に吸収して自分の手札を増やし、新しいものを生み出す。*
 
 ## マーケットプレイスの追加方法
 
 ```bash
-/plugin marketplace add sniper-fly/souma-recipe
+/plugin marketplace add sniper-fly/souma-recette
 ```
 
 ## 含まれるプラグイン
@@ -26,8 +28,8 @@
 マーケットプレイスを追加後、個別のプラグインをインストール:
 
 ```bash
-/plugin install example-commands@souma-recipe
-/plugin install example-agent@souma-recipe
+/plugin install example-commands@souma-recette
+/plugin install example-agent@souma-recette
 ```
 
 ## 新しいプラグインの追加方法

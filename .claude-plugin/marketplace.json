@@ -128,6 +128,26 @@
         "security",
         "scanner"
       ]
+    },
+    {
+      "name": "askme",
+      "source": "./plugins/askme",
+      "description": "曖昧さや不確実性がある場合に仮定で進めず明示的に確認するスキル",
+      "version": "1.0.0",
+      "author": {
+        "name": "sniper-fly"
+      },
+      "category": "productivity",
+      "keywords": [
+        "clarification",
+        "requirements",
+        "confirmation",
+        "uncertainty"
+      ],
+      "tags": [
+        "clarification",
+        "workflow"
+      ]
     }
   ]
 }

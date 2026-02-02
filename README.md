@@ -12,35 +12,43 @@
 
 ## 含まれるプラグイン
 
+### askme
+不確実な要件や複数の実装アプローチがある場合に、仮定で進めず明示的にユーザーへ確認を行うスキル
+
+### gemini-search
+Gemini CLIのGoogle Search Grounding機能でWeb検索を実行
+
+### mirariko
+スキルベースの実装計画書レビュー＆ブラッシュアップの反復ワークフロー
+
 ### prompt-optimization
 モデル非依存のプロンプト分析・最適化パターン（BP-001〜BP-008）
 
 ### security-scanner
 リポジトリ全体のマルウェア・悪意コードパターン検出
 
-### mirariko
-スキルベースの実装計画書レビュー＆ブラッシュアップの反復ワークフロー
-
-### terraform-review
-Terraformコードの本番デプロイ前レビュー
-
 ### skill-development
 Claude Codeプラグイン用スキル作成のベストプラクティス
 
-### gemini-search
-Gemini CLIのGoogle Search Grounding機能でWeb検索を実行
+### tech-doc-research
+要件定義書から必要技術を調査し、セットアップ手順・コード例・ベストプラクティスを含む技術調査ドキュメントを作成
+
+### terraform-review
+Terraformコードの本番デプロイ前レビュー
 
 ## プラグインのインストール
 
 マーケットプレイスを追加後、個別のプラグインをインストール:
 
 ```bash
+/plugin install askme@souma-recette
+/plugin install gemini-search@souma-recette
+/plugin install mirariko@souma-recette
 /plugin install prompt-optimization@souma-recette
 /plugin install security-scanner@souma-recette
-/plugin install mirariko@souma-recette
-/plugin install terraform-review@souma-recette
 /plugin install skill-development@souma-recette
-/plugin install gemini-search@souma-recette
+/plugin install tech-doc-research@souma-recette
+/plugin install terraform-review@souma-recette
 ```
 
 ## 新しいプラグインの追加方法

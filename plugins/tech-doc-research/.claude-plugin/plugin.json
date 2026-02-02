@@ -1,5 +1,8 @@
 {
   "name": "tech-doc-research",
+  "description": "要件定義書から必要技術を調査し、セットアップ手順・コード例・ベストプラクティスを含む技術調査ドキュメントを作成",
   "version": "1.0.0",
-  "description": "SubAgentを活用した技術ドキュメント調査"
+  "author": {
+    "name": "sniper-fly"
+  }
 }

@@ -18,6 +18,7 @@ Playwright MCPを使用して、アニメの公式サイトから配信サービ
 
 - **アニメタイトル** - 調査対象のアニメ名
 - **公式サイトURL** - アニメの公式サイトURL
+- **REPORT_OUTPUT_DIR** - レポートの出力先親ディレクトリパス
 
 ## ワークフロー
 
@@ -27,9 +28,15 @@ Playwright MCPを使用して公式アニメサイトをナビゲートし、配
 
 **探索フロー:**
 
-1. **テキスト検索** - ページコンテンツから配信サービスのキーワードを検索
-2. **スクリーンショット分析** - テキスト検索で見つからない場合、スクリーンショットを撮影して画像解析
-3. **エビデンス検証** - 撮影した画像を読み取り、配信サービスのエビデンスを確認
+1. **テキスト検索** - `browser_snapshot` / `browser_evaluate` を使用してページコンテンツから配信サービスのキーワードを検索
+2. **フォールバック: スクリーンショット分析** - テキスト検索で情報が得られない場合に限り、スクリーンショットを撮影して画像解析（撮影先は必ず `REPORT_OUTPUT_DIR` 配下）
+3. **エビデンス検証** - 配信情報が特定できたら、最終エビデンス用スクリーンショットを `REPORT_OUTPUT_DIR` 配下に撮影・保存
+
+**探索段階のファイル生成ルール:**
+
+- 探索段階では `browser_snapshot` / `browser_evaluate` のみを使用し、**ファイルを生成しない**
+- スクリーンショットは**最終エビデンス用としてのみ**撮影し、必ず `REPORT_OUTPUT_DIR` 配下に保存する
+- `REPORT_OUTPUT_DIR` 以外の場所（プロジェクトルート等）にファイルを生成してはならない
 
 **探索設定:**
 
@@ -38,14 +45,27 @@ Playwright MCPを使用して公式アニメサイトをナビゲートし、配
 
 ### ステップ2: 出力の生成
 
+**出力先ディレクトリ構造:**
+
+すべての出力は `REPORT_OUTPUT_DIR` 配下にアニメタイトルごとのサブディレクトリを作成して保存します。
+
+```
+{REPORT_OUTPUT_DIR}/
+└── {anime_title}/
+    ├── report_{datetime}.json
+    └── ss_{datetime}.png
+```
+
 **スクリーンショット保存:**
 
-- ディレクトリ: `report_assets/{year}_{month}/`（例: `report_assets/2026_04/`）
-- ファイル名: アニメタイトル
+- パス: `{REPORT_OUTPUT_DIR}/{anime_title}/ss_{datetime}.{拡張子}`
+- `{datetime}` は `YYYYMMDD_HHmmss` 形式（例: `20260222_143052`）
+- 拡張子はスクリーンショットの形式に応じて `png`, `jpg` 等を使用
 
-**JSON出力:**
+**JSONレポート保存:**
 
-- 場所: プロジェクトルートに `report.json` として保存
+- パス: `{REPORT_OUTPUT_DIR}/{anime_title}/report_{datetime}.json`
+- `{datetime}` はスクリーンショットと同一のタイムスタンプを使用
 
 **成功時のフォーマット:**
 
@@ -53,7 +73,7 @@ Playwright MCPを使用して公式アニメサイトをナビゲートし、配
 {
   "title": "アニメタイトル",
   "url": "公式サイトURL",
-  "screenshot": "スクリーンショットのパス",
+  "screenshot": "{REPORT_OUTPUT_DIR}/{anime_title}/ss_{datetime}.png",
   "streaming_service": ["Netflix", "Amazon Prime Video", "..."],
   "error": null
 }
@@ -65,7 +85,7 @@ Playwright MCPを使用して公式アニメサイトをナビゲートし、配
 {
   "title": "アニメタイトル",
   "url": "公式サイトURL",
-  "screenshot": "スクリーンショットのパス",
+  "screenshot": "{REPORT_OUTPUT_DIR}/{anime_title}/ss_{datetime}.png",
   "streaming_service": [],
   "error": "配信先が見つかりませんでした"
 }

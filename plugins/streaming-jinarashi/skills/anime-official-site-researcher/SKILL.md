@@ -2,6 +2,7 @@
 name: anime-official-site-researcher
 description: 「アニメの公式サイトを調べて」「シーズンのアニメ一覧を取得」「AniListからアニメ情報を取得」などのリクエストに対応するスキル
 version: 1.1.0
+allowed_tools: Bash
 ---
 
 # アニメ公式サイト検索スキル

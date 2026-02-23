@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npm install -g @playwright/cli@latest && playwright-cli install --skills"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -53,24 +53,24 @@ version: 1.1.0
 
 各アニメのセッション名は英語（romaji）タイトルから自動生成されるため、セッションの競合は発生しない。
 
-**重要: 並列実行の制御**
+**重要: 並列実行の制御（スライディングウィンドウ方式）**
 
-- 1バッチあたり最大10アニメを同時処理する
-- アニメ数が10を超える場合は、10件ずつのバッチに分割して実行する
-- 各バッチの全調査が完了してから次のバッチに進む
-- 全バッチの完了後に Step 3 に進む
+- 同時実行数の上限は **最大10** とする
+- 1つのタスクが完了したら即座に次の未実行タスクを開始する
+- 常に最大10個のタスクが並列実行されている状態を維持する
+- 全タスクの完了後に Step 3 に進む
 
 **実行手順:**
 
-1. アニメリストを最大10件ずつのバッチに分割する
-2. 各バッチ内の全アニメについて、`Skill` ツールで `streaming-jinarashi:anime-streaming-researcher` を呼び出す
+1. アニメリスト全体をキューとして扱う
+2. まず最初の10件（またはリスト全体が10件未満の場合は全件）について、`Task` ツール（`run_in_background: true`）で `streaming-jinarashi:anime-streaming-researcher` スキルを呼び出す Agent を起動する
 3. 以下のパラメータを引数として渡す:
    - アニメタイトル（日本語）: `{title.native}`
    - アニメタイトル（英語）: `{title.romaji}`
    - 公式サイトURL: `{officialSiteUrl}`
-   - REPORT_OUTPUT_DIR: `reports/{year}/{season}`
-4. バッチ内の全呼び出しを **1つのメッセージ内で同時に** 実行し、全ての調査完了を待つ
-5. 次のバッチがあれば繰り返す
+   - REPORT_OUTPUT_DIR: `<absolute_path_to>/reports/{year}/{season}`
+4. `TaskOutput` で完了を監視し、いずれかのタスクが完了したら、キューに未実行のアニメが残っていれば即座に新しい `Task` を起動する
+5. これを繰り返し、常に最大10並列を維持しながら全アニメの調査を完了させる
 
 ### Step 3: 結果の集約とレポート生成
 
@@ -78,12 +78,12 @@ version: 1.1.0
 
 **手順:**
 
-1. `reports/{year}/{season}/` ディレクトリ配下の各アニメフォルダから `report_*.json` を読み取る
+1. `REPORT_OUTPUT_DIR` ディレクトリ配下の各アニメフォルダから `report_*.json` を読み取る
 2. 全アニメの結果を以下のカテゴリに分類する:
    - **独占配信:** `streaming_service` 配列の要素数が 1
    - **複数サービス配信:** `streaming_service` 配列の要素数が 2 以上
    - **配信先なし:** `streaming_service` 配列が空、または `error` が存在する
-3. `references/report-format.md` のテンプレートに従い、集約レポートを `reports/{year}/{season}/summary_report.md` に出力する
+3. `references/report-format.md` のテンプレートに従い、集約レポートを `<REPORT_OUTPUT_DIR>/summary_report.md` に出力する
 4. レポートの内容をユーザーにサマリーとして表示する
 
 ## エラーハンドリング

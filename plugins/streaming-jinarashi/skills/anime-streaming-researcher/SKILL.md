@@ -4,7 +4,7 @@ description: 「配信サービスを調べて」「アニメの配信先を確�
 version: 2.0.0
 allowed_tools: Bash, Read, Edit, Skill, Write
 context: fork
-agent: general-purpose
+agent: general-agent
 ---
 
 # アニメ配信サービス検索スキル
@@ -129,46 +129,8 @@ Playwright CLIを使用して公式アニメサイトをナビゲートし、配
 **手順:**
 
 1. 探索ステップで特定した「定額見放題」セクションのコンテナ要素をCSSセレクタ等で特定する
-2. `playwright-cli -s={SESSION_NAME} run-code "async page => { await page.evaluate(() => { ... }); }"` を使用し、そのコンテナ内の要素に対してのみ背景色を設定（例: `element.style.backgroundColor = 'yellow'`）
-3. **コントラストチェック** - ハイライト適用後、テキストの可読性を確認・補正する（下記「アクセシビリティ対応」参照）
-4. ハイライト適用後にスクリーンショットを撮影
-
-### アクセシビリティ対応（ハイライト時のコントラスト補正）
-
-黄色背景のハイライトを適用する際、元のテキスト色が白や明るい色の場合に文字が読めなくなる問題を防ぐ。
-
-**原則:**
-
-- ハイライト背景色（黄色系）に対して、テキストが十分なコントラスト比を持つことを保証する
-- 元のテキスト色を尊重しつつ、可読性が損なわれる場合のみ補正する
-
-**実装手順:**
-
-`playwright-cli -s={SESSION_NAME} run-code "async page => { ... }"` でハイライトを適用する際、以下のコントラストチェックを同時に実行する：
-
-1. ハイライト対象の各要素について `window.getComputedStyle(element).color` で現在のテキスト色を取得する
-2. テキスト色のRGB値から相対輝度を算出し、明るい色（白、薄いグレー等）かどうかを判定する
-3. テキスト色が明るい場合（相対輝度が0.5以上を目安）、`element.style.color = '#333'` 等の暗い色に変更する
-4. リンク要素（`<a>`タグ）のテキスト色も同様にチェック・補正する
-
-**判定ロジック例（JavaScript）:**
-
-```javascript
-function ensureContrast(element) {
-  const computed = window.getComputedStyle(element);
-  const color = computed.color;
-  // rgb(r, g, b) 形式をパース
-  const match = color.match(/(\d+),\s*(\d+),\s*(\d+)/);
-  if (match) {
-    const [r, g, b] = [match[1], match[2], match[3]].map(Number);
-    // 相対輝度の簡易計算
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    if (luminance > 0.5) {
-      element.style.color = '#333';
-    }
-  }
-}
-```
+2. `playwright-cli -s={SESSION_NAME} run-code "async page => { await page.evaluate(() => { ... }); }"` を使用し、そのコンテナ内の要素に対してのみ背景色を黄色に設定し、テキスト色を黒に固定する（例: `element.style.backgroundColor = 'yellow'; element.style.color = '#000'`）
+3. ハイライト適用後にスクリーンショットを撮影
 
 ## 重要な注意事項
 

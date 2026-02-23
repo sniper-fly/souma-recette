@@ -1,41 +1,66 @@
 ---
 name: anime-streaming-researcher
 description: 「配信サービスを調べて」「アニメの配信先を確認」「どこで見れるか調べて」「公式サイトから配信情報を調査」などのリクエストに対応するスキル
-version: 1.0.0
+version: 2.0.0
+allowed_tools: Bash, Read, Edit, Skill, Write
+context: fork
+agent: general-purpose
 ---
 
 # アニメ配信サービス検索スキル
 
-Playwright MCPを使用して、アニメの公式サイトから配信サービス情報を自動取得するスキルです。
-
-## 目的
-
-公式サイトURLを入力として受け取り、配信サービス情報を自動収集します。
+Playwright CLIを使用して、アニメの公式サイトから配信サービス情報を自動取得するスキルです。
 
 ## 入力
 
 このスキルは以下の情報を入力として受け取ります：
 
-- **アニメタイトル** - 調査対象のアニメ名
+- **アニメタイトル（日本語）** - 調査対象のアニメ名（日本語表記、例: `葬送のフリーレン`）
+- **アニメタイトル（英語）** - 調査対象のアニメ名（romaji表記、例: `Sousou no Frieren`）
 - **公式サイトURL** - アニメの公式サイトURL
 - **REPORT_OUTPUT_DIR** - レポートの出力先親ディレクトリパス
+
+## セッション名の決定
+
+Playwright CLIのセッション名は、英語（romaji）タイトルから自動的に生成する。
+
+**生成ルール:**
+
+1. 英語タイトルからアルファベット・数字・スペース以外の特殊記号を除去する
+2. スペースをハイフン `-` に置換する
+3. 小文字に変換する
+
+**例:**
+
+| 英語タイトル | セッション名 |
+|-------------|-------------|
+| `Sousou no Frieren` | `sousou-no-frieren` |
+| `Re:ZERO -Starting Life in Another World-` | `rezero-starting-life-in-another-world` |
+| `Oshi no Ko 2nd Season` | `oshi-no-ko-2nd-season` |
+
+## Playwright CLIの使い方
+
+**重要:** ブラウザ操作には必ず `playwright-cli` スキルを使用すること。コマンドの詳細やオプションは `playwright-cli` スキルを参照する。
+
+すべてのコマンドに `-s={SESSION_NAME}` を付与してセッションを分離する。必ず入力の英語タイトルから生成した SESSION_NAME を使い、他のセッションのブラウザを操作してはならない。
 
 ## ワークフロー
 
 ### ステップ1: 公式サイトから配信情報を探索
 
-Playwright MCPを使用して公式アニメサイトをナビゲートし、配信情報を収集します。
+Playwright CLIを使用して公式アニメサイトをナビゲートし、配信情報を収集します。
 
 **探索フロー:**
 
-1. **テキスト検索** - `browser_snapshot` / `browser_evaluate` を使用してページコンテンツから配信サービスのキーワードを検索
-2. **フォールバック: スクリーンショット分析** - テキスト検索で情報が得られない場合に限り、スクリーンショットを撮影して画像解析（撮影先は必ず `REPORT_OUTPUT_DIR` 配下）
-3. **エビデンスハイライト** - 配信情報が特定できたら、`browser_evaluate` を使用して該当テキスト要素の背景色をハイライト（例: `element.style.backgroundColor = 'yellow'`）し、どの情報を参考にしたか視覚的に明示する
-4. **エビデンス撮影** - ハイライト適用後、最終エビデンス用スクリーンショットを `REPORT_OUTPUT_DIR` 配下に撮影・保存
+1. **ブラウザを開く** - `playwright-cli -s={SESSION_NAME} open {公式サイトURL}` でページを開く
+2. **テキスト検索** - `playwright-cli -s={SESSION_NAME} snapshot` / `playwright-cli -s={SESSION_NAME} eval "code"` を使用してページコンテンツから配信サービスのキーワードを検索
+3. **フォールバック: スクリーンショット分析** - テキスト検索で情報が得られない場合に限り、スクリーンショットを撮影して画像解析（撮影先は必ず `REPORT_OUTPUT_DIR` 配下）
+4. **エビデンスハイライト** - 配信情報が特定できたら、`playwright-cli -s={SESSION_NAME} run-code "async page => { ... }"` を使用して該当テキスト要素の背景色をハイライト（例: `element.style.backgroundColor = 'yellow'`）し、どの情報を参考にしたか視覚的に明示する。**注意:** ハイライト処理は関数定義やforEachを含む複数行コードになるため、`eval` ではなく `run-code` を使用すること（`eval` はシリアライズエラーになる）
+5. **エビデンス撮影** - ハイライト適用後、最終エビデンス用スクリーンショットを `REPORT_OUTPUT_DIR` 配下に撮影・保存
 
 **探索段階のファイル生成ルール:**
 
-- 探索段階では `browser_snapshot` / `browser_evaluate` のみを使用し、**ファイルを生成しない**
+- 探索段階では `snapshot` / `eval` のみを使用し、**ファイルを生成しない**
 - スクリーンショットは**最終エビデンス用としてのみ**撮影し、必ず `REPORT_OUTPUT_DIR` 配下に保存する
 - `REPORT_OUTPUT_DIR` 以外の場所（プロジェクトルート等）にファイルを生成してはならない
 
@@ -99,12 +124,12 @@ Playwright MCPを使用して公式アニメサイトをナビゲートし、配
 
 - ハイライト対象は**実際に `streaming_service` の根拠として参照したセクション・要素のみ**に限定する
 - 同じサービス名がページ内の別セクション（個別課金、レンタル等）にも存在する場合があるため、ページ全体へのキーワードマッチは避ける
-- 探索ステップで取得した `browser_snapshot` のDOM構造を活用し、根拠となったセクションのコンテナ要素を特定した上で、そのコンテナ内の要素のみをハイライトする
+- 探索ステップで取得した `snapshot` のDOM構造を活用し、根拠となったセクションのコンテナ要素を特定した上で、そのコンテナ内の要素のみをハイライトする
 
 **手順:**
 
 1. 探索ステップで特定した「定額見放題」セクションのコンテナ要素をCSSセレクタ等で特定する
-2. `browser_evaluate` を使用し、そのコンテナ内の要素に対してのみ背景色を設定（例: `element.style.backgroundColor = 'yellow'`）
+2. `playwright-cli -s={SESSION_NAME} run-code "async page => { await page.evaluate(() => { ... }); }"` を使用し、そのコンテナ内の要素に対してのみ背景色を設定（例: `element.style.backgroundColor = 'yellow'`）
 3. **コントラストチェック** - ハイライト適用後、テキストの可読性を確認・補正する（下記「アクセシビリティ対応」参照）
 4. ハイライト適用後にスクリーンショットを撮影
 
@@ -119,7 +144,7 @@ Playwright MCPを使用して公式アニメサイトをナビゲートし、配
 
 **実装手順:**
 
-`browser_evaluate` でハイライトを適用する際、以下のコントラストチェックを同時に実行する：
+`playwright-cli -s={SESSION_NAME} run-code "async page => { ... }"` でハイライトを適用する際、以下のコントラストチェックを同時に実行する：
 
 1. ハイライト対象の各要素について `window.getComputedStyle(element).color` で現在のテキスト色を取得する
 2. テキスト色のRGB値から相対輝度を算出し、明るい色（白、薄いグレー等）かどうかを判定する
@@ -172,13 +197,13 @@ function ensureContrast(element) {
 
 ### ステップ3: ブラウザクリーンアップ
 
-すべての作業（探索・スクリーンショット撮影・レポート出力）が完了した後、**必ず** `browser_close` を呼び出してPlaywrightのブラウザインスタンスを終了する。
+すべての作業（探索・スクリーンショット撮影・レポート出力）が完了した後、**必ず** `playwright-cli -s={SESSION_NAME} close` を呼び出してブラウザインスタンスを終了する。
 
 **ルール:**
 
-- レポート出力まで完了したことを確認してから `browser_close` を実行する
+- レポート出力まで完了したことを確認してから `close` を実行する
 - 正常終了・エラー終了を問わず、必ずクリーンアップを行う
-- `browser_close` を呼び忘れるとブラウザプロセスが残存しメモリを消費し続けるため、スキルの最終ステップとして必須とする
+- `close` を呼び忘れるとブラウザプロセスが残存しメモリを消費し続けるため、スキルの最終ステップとして必須とする
 
 ## 配信サービスキーワード一覧
 
@@ -191,7 +216,7 @@ function ensureContrast(element) {
 
 ## 必要なツール
 
-- **Playwright MCP** - ウェブサイト探索のブラウザ自動化
+- **Playwright CLI** - ウェブサイト探索のブラウザ自動化（`playwright-cli` コマンド）
 - **画像解析** - スクリーンショットベースの配信情報検出
 
 ## 参考リソース

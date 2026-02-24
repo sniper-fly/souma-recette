@@ -168,6 +168,27 @@
         "research",
         "documentation"
       ]
+    },
+    {
+      "name": "streaming-jinarashi",
+      "source": "./plugins/streaming-jinarashi",
+      "description": "AniList APIとPlaywright CLIを活用し、シーズンアニメの配信サービス情報を自動調査・独占配信を特定するツール",
+      "version": "1.0.0",
+      "author": {
+        "name": "sniper-fly"
+      },
+      "category": "automation",
+      "keywords": [
+        "anime",
+        "streaming",
+        "anilist",
+        "playwright",
+        "automation"
+      ],
+      "tags": [
+        "anime",
+        "streaming"
+      ]
     }
   ]
 }

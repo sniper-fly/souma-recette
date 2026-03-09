@@ -1,5 +1,5 @@
 {
   "name": "streaming-jinarashi",
   "version": "1.0.0",
-  "description": "Anime streaming service finder using AniList API and Playwright MCP"
+  "description": "Anime streaming service finder using AniList API and Playwright CLI"
 }

@@ -1,7 +1,7 @@
 ---
 name: hasegawa
 description: This skill should be used when the user asks to commit, wants help with git commit, or says 'コミットして', 'hasegawa', 'コミットを整理して'.
-allowed_tools: Bash, Read, Glob, Grep, AskUserQuestion, Edit
+allowed_tools: Bash(git add *), Read, Glob, Grep, AskUserQuestion, Edit, Task
 ---
 
 # Hasegawa - Git Commit アシスタント
@@ -75,22 +75,97 @@ questions:
 
 「分割を変更したい」が選ばれた場合、具体的な変更内容をヒアリングして再提案する。
 
-### Step 4: コミットメッセージ生成・確認
+### Step 4: グループ別コミット準備（サブエージェント）
 
-Step 1で把握した既存コミットの言語・スタイルに合わせてコミットメッセージを生成する。
+グルーピング確定後、**各グループについて `Task` ツール（`subagent_type: general-purpose`, `run_in_background: false`）を起動**し、コミットメッセージ生成と機密チェックを行う。
+
+**サブエージェントへのプロンプト:**
+
+各グループに対して以下の情報をプロンプトに含めて Task を起動する:
+
+```
+あなたはコミット準備アシスタントです。以下のグループについて分析してください。
+
+## グループ情報
+- グループ名: {グループ名}
+- 対象ファイル: {ファイル一覧}
+
+## タスク
+
+### 1. ファイル内容の把握
+対象ファイルをReadで読み、以下を把握してください:
+- 変更された関数名・クラス名・設定項目
+- 変更の意図（新機能追加、バグ修正、リファクタリング等）
+- 変更の影響範囲
+
+### 2. diff内容の機密情報チェック
+以下のコマンドでdiffの追加行を取得し、機密情報パターンをチェックしてください:
+
+```bash
+git diff -- {対象ファイル} | grep '^+'
+```
+
+**チェック対象パターン（Critical）:**
+- APIキー代入: API_KEY=, SECRET_KEY= 等に続く文字列値
+- 秘密鍵ヘッダー: -----BEGIN (RSA|EC|DSA|OPENSSH)? ?PRIVATE KEY-----
+- プラットフォームトークン: ghp_, gho_, github_pat_, sk-, sk-ant-, xoxb-, xoxp-, AKIA, AIza で始まる文字列
+- パスワード直書き: password, passwd 等に続く文字列値
+
+**チェック対象パターン（Warning）:**
+- 認証トークン代入: auth_token, access_token, refresh_token に続く文字列値
+- 長いBase64文字列（40文字以上）
+- DB接続文字列にパスワードを含むもの
+
+**除外条件:**
+- テストファイル内のダミー値（test/, tests/, __tests__/, spec/ 配下、*_test.*, *.spec.*, *.test.*）
+- コメント行（//, #, /*, *, -- で始まる行）
+- 環境変数参照（process.env., os.environ, ENV[, System.getenv, ${ を含む行）
+- .example, .sample, .template ファイル
+- 明らかなプレースホルダー（your-api-key, xxx, dummy, placeholder, REPLACE_ME, TODO を含む値）
+
+### 3. コミットメッセージ生成
+以下のスタイルに合わせてコミットメッセージを生成してください:
+
+{Step 1で把握した既存コミットスタイル情報: 言語、prefix有無、形式の具体例}
 
 **メッセージ生成ルール:**
-- 既存コミットが日本語ならメッセージも日本語で書く（英語なら英語）
-- 既存コミットのprefixパターン（feat:, fix:等）があればそれに従う
+- 既存コミットのスタイル（言語・prefix・形式）に合わせる
 - 1行目は変更の要約（50文字以内目安）
+- ファイル内容から把握した変更意図を反映した具体的なメッセージにする
 - 必要に応じて空行を挟んで詳細を記述
 - Co-Authored-by等のtrailerは含めない
 
-AskUserQuestionで生成したメッセージを提示し、確認を求める:
+## 出力形式
+以下の形式で結果を報告してください:
+
+**コミットメッセージ:**
+{生成したコミットメッセージ}
+
+**機密情報チェック結果:**
+- Critical: {検出内容、またはなし}
+- Warning: {検出内容、またはなし}
+```
+
+### Step 5: 確認とコミット実行
+
+サブエージェントの結果を集約し、確認・実行する。
+
+**1. 結果集約と機密情報対応:**
+
+- 各サブエージェントの結果をまとめて表示する
+- **機密情報（Critical）が検出されたグループがある場合:**
+  - AskUserQuestionで該当行の詳細を警告表示する
+  - 該当グループを「除外して続行」か「そのままコミット」かをユーザーに選択してもらう
+- **Warning検出の場合:**
+  - AskUserQuestionで内容を確認し、ユーザーに判断してもらう
+
+**2. コミットメッセージの最終確認:**
+
+AskUserQuestionで全グループのコミットメッセージを一覧提示し、確認を求める:
 
 ```yaml
 questions:
-  - question: "以下のコミットメッセージでよろしいですか？\n\n{生成したメッセージ}"
+  - question: "以下のコミットメッセージでよろしいですか？\n\n{各グループのメッセージ一覧}"
     options:
       - label: "このメッセージで進める"
       - label: "メッセージを修正したい"
@@ -98,14 +173,10 @@ questions:
 
 「修正したい」が選ばれた場合、ユーザーの指示に従ってメッセージを修正する。
 
-### Step 5: git commit実行
+**3. コミット実行:**
 
-確定した内容に基づいてコミットを実行する。
-
-1. `git add` で対象ファイルをステージする（ファイルを個別に指定、`git add .` は使わない）
-2. `git commit` でコミットを作成する
-3. 複数グループがある場合はグループごとに繰り返す
-4. `git log --oneline -5` で結果を確認し、ユーザーに報告する
+1. グループごとに `git add`（ファイルを個別に指定）+ `git commit`（HEREDOC）を順次実行する
+2. 全グループのコミット完了後、`git log --oneline -5` で結果を確認し、ユーザーに報告する
 
 **注意事項:**
 - `git add .` や `git add -A` は使用しない（意図しないファイルの混入を防ぐ）

@@ -1,0 +1,5 @@
+{
+  "name": "session-archaeologist",
+  "version": "1.0.0",
+  "description": "Claude Codeの過去の会話ログを発掘・分析し、開発の試行錯誤プロセスやインサイトを構造化して要約する"
+}

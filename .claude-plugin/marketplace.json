@@ -170,6 +170,27 @@
       ]
     },
     {
+      "name": "session-archaeologist",
+      "source": "./plugins/session-archaeologist",
+      "description": "Claude Codeの過去の会話ログを発掘・分析し、開発の試行錯誤プロセスやインサイトを構造化して要約する",
+      "version": "1.0.0",
+      "author": {
+        "name": "sniper-fly"
+      },
+      "category": "analysis",
+      "keywords": [
+        "session",
+        "history",
+        "analysis",
+        "conversation-log",
+        "archaeology"
+      ],
+      "tags": [
+        "analysis",
+        "history"
+      ]
+    },
+    {
       "name": "streaming-jinarashi",
       "source": "./plugins/streaming-jinarashi",
       "description": "AniList APIとPlaywright CLIを活用し、シーズンアニメの配信サービス情報を自動調査・独占配信を特定するツール",
@@ -188,6 +209,26 @@
       "tags": [
         "anime",
         "streaming"
+      ]
+    },
+    {
+      "name": "hasegawa",
+      "source": "./plugins/hasegawa",
+      "description": "ステージされていない変更を検出し、適切なコミット粒度の提案からgit commitまでを一貫してアシストするスキル",
+      "version": "1.0.0",
+      "author": {
+        "name": "sniper-fly"
+      },
+      "category": "development",
+      "keywords": [
+        "git",
+        "commit",
+        "staging",
+        "version-control"
+      ],
+      "tags": [
+        "git",
+        "workflow"
       ]
     }
   ]

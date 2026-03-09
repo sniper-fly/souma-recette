@@ -29,6 +29,12 @@ Gemini CLIのGoogle Search Grounding機能でWeb検索を実行
 ### security-scanner
 リポジトリ全体のマルウェア・悪意コードパターン検出
 
+### session-archaeologist
+Claude Codeの過去の会話ログを発掘・分析し、開発の試行錯誤プロセスやインサイトを構造化して要約する
+
+### streaming-jinarashi
+AniList APIとPlaywright CLIを活用し、シーズンアニメの配信サービス情報を自動調査・独占配信を特定するツール
+
 ### skill-development
 Claude Codeプラグイン用スキル作成のベストプラクティス
 
@@ -48,6 +54,8 @@ Terraformコードの本番デプロイ前レビュー
 /plugin install mirariko@souma-recette
 /plugin install prompt-optimization@souma-recette
 /plugin install security-scanner@souma-recette
+/plugin install session-archaeologist@souma-recette
+/plugin install streaming-jinarashi@souma-recette
 /plugin install skill-development@souma-recette
 /plugin install tech-doc-research@souma-recette
 /plugin install terraform-review@souma-recette

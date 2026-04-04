@@ -1,0 +1,98 @@
+# pyproject.toml テンプレート
+
+以下のテンプレートを使用して `pyproject.toml` を生成する。
+`{PROJECT_NAME}`, `{DESCRIPTION}`, `{PYTHON_VERSION}`, `{DEPENDENCIES}` をユーザーから取得した値で置換する。
+
+ツール設定（`[tool.ruff]`, `[tool.mypy]`, `[tool.pytest]`, `[dependency-groups]`, `[tool.uv]`）は固定のチーム標準。変更しない。
+
+```toml
+[project]
+name = "{PROJECT_NAME}"
+version = "0.1.0"
+description = "{DESCRIPTION}"
+requires-python = ">={PYTHON_VERSION}"
+dependencies = [
+{DEPENDENCIES}
+]
+
+[tool.ruff]
+target-version = "py{PYTHON_VERSION_SHORT}"
+src = ["src", "tests"]
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "I",     # isort
+    "N",     # pep8-naming
+    "UP",    # pyupgrade
+    "B",     # flake8-bugbear
+    "A",     # flake8-builtins
+    "C4",    # flake8-comprehensions
+    "SIM",   # flake8-simplify
+    "ARG",   # flake8-unused-arguments
+    "PT",    # flake8-pytest-style
+    "PTH",   # flake8-use-pathlib
+    "TCH",   # flake8-type-checking
+    "RUF",   # ruff-specific rules
+    "S",     # flake8-bandit (セキュリティ)
+    "PL",    # pylint 互換 (convention/error/refactor/warning)
+]
+ignore = [
+    "COM812",  # ruff formatter と競合
+    "ISC001",  # ruff formatter と競合
+    "PLR0913", # too-many-arguments (DI で引数が多くなるため緩和)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["ARG", "N802", "S", "PLC2401", "PLR2004"]
+
+[tool.mypy]
+python_version = "{PYTHON_VERSION}"
+mypy_path = "."
+packages = ["src", "tests"]
+plugins = ["pydantic.mypy"]
+strict = true
+show_error_codes = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+[[tool.mypy.overrides]]
+module = [
+{MYPY_IGNORE_MODULES}
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.19.1",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.15.4",
+]
+
+[tool.uv]
+exclude-newer = "14 days"
+```
+
+## プレースホルダー説明
+
+| プレースホルダー | 説明 | 例 |
+|---|---|---|
+| `{PROJECT_NAME}` | プロジェクト名（ケバブケース推奨） | `my-app` |
+| `{DESCRIPTION}` | プロジェクトの説明 | `My application` |
+| `{PYTHON_VERSION}` | Pythonバージョン（メジャー.マイナー） | `3.12` |
+| `{PYTHON_VERSION_SHORT}` | Pythonバージョン（ドットなし） | `py312` |
+| `{DEPENDENCIES}` | 依存関係（各行 `"package>=x.y.z",` 形式） | `"pydantic>=2.12.5",` |
+| `{MYPY_IGNORE_MODULES}` | mypy型チェック除外モジュール（各行 `"module.*",` 形式） | `"dependency_injector.*",` |

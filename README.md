@@ -41,6 +41,9 @@ Claude Codeプラグイン用スキル作成のベストプラクティス
 ### tech-doc-research
 要件定義書から必要技術を調査し、セットアップ手順・コード例・ベストプラクティスを含む技術調査ドキュメントを作成
 
+### python-seifuku
+uv + ruff + mypy + pytest構成のPythonプロジェクト初期セットアップとPostToolUse hooksによるコード品質チェック自動化
+
 ### terraform-review
 Terraformコードの本番デプロイ前レビュー
 
@@ -58,6 +61,7 @@ Terraformコードの本番デプロイ前レビュー
 /plugin install streaming-jinarashi@souma-recette
 /plugin install skill-development@souma-recette
 /plugin install tech-doc-research@souma-recette
+/plugin install python-seifuku@souma-recette
 /plugin install terraform-review@souma-recette
 ```
 

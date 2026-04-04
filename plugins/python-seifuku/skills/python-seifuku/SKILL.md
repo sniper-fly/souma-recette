@@ -1,14 +1,6 @@
 ---
 name: python-seifuku
-description: >-
-  Pythonの標準ガードレールを自動整備する。
-  This skill should be used when the user asks to
-  "Pythonプロジェクトをセットアップして", "Python開発環境を初期化して",
-  "uv環境を構築して", "ruffとmypyをセットアップして",
-  "コード品質チェックhookを設定して", "PostToolUse hookを設定して",
-  "check_code_quality.shを配置して", "python-seifuku",
-  or needs to initialize a new Python project with uv, ruff, mypy, pytest,
-  and Claude Code PostToolUse hooks for automated code quality checking.
+description: This skill should be used when the user asks to "Pythonプロジェクトをセットアップして", "python-seifuku", "コード品質チェックhookを設定して". Pythonの標準ガードレール(uv, ruff, mypy, pytest, PostToolUse hooks)を自動整備する。
 allowed_tools: Bash, Read, Write, AskUserQuestion, Glob
 disable-model-invocation: true
 ---

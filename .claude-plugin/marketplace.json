@@ -230,6 +230,30 @@
         "git",
         "workflow"
       ]
+    },
+    {
+      "name": "python-seifuku",
+      "source": "./plugins/python-seifuku",
+      "description": "uv + ruff + mypy + pytest構成のPythonプロジェクト初期セットアップとPostToolUse hooksによるコード品質チェック自動化",
+      "version": "1.0.0",
+      "author": {
+        "name": "sniper-fly"
+      },
+      "category": "development",
+      "keywords": [
+        "python",
+        "uv",
+        "ruff",
+        "mypy",
+        "pytest",
+        "setup",
+        "hooks",
+        "code-quality"
+      ],
+      "tags": [
+        "python",
+        "setup"
+      ]
     }
   ]
 }

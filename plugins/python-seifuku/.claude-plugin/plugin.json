@@ -1,0 +1,5 @@
+{
+  "name": "python-seifuku",
+  "version": "1.0.0",
+  "description": "uv + ruff + mypy + pytest構成のPythonプロジェクト初期セットアップとPostToolUse hooksによるコード品質チェック自動化"
+}

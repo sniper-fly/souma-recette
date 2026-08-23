@@ -1,0 +1,3 @@
+name: claude-settings-importer
+version: 1.0.0
+description: "個人(~/.claude/)またはプロジェクト固有(.claude/)のClaude Code設定をAPM形式のパッケージに変換するスキル"

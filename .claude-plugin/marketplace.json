@@ -2,258 +2,86 @@
   "name": "souma-recette",
   "owner": {
     "name": "sniper-fly",
-    "email": "50983271+sniper-fly@users.noreply.github.com"
-  },
-  "metadata": {
-    "description": "Claude Code plugin marketplace - Collection of custom plugins",
-    "version": "1.0.0",
-    "pluginRoot": "./plugins"
+    "url": "https://github.com/sniper-fly"
   },
   "plugins": [
     {
       "name": "mirariko",
-      "source": "./plugins/mirariko",
       "description": "スキルベースの実装計画書レビュー＆ブラッシュアップの反復ワークフロー",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "productivity",
-      "keywords": [
-        "review",
-        "planning",
-        "workflow",
-        "iterative"
-      ],
-      "tags": [
-        "review",
-        "planning"
-      ]
+      "source": "./plugins/mirariko"
     },
     {
       "name": "gemini-search",
-      "source": "./plugins/gemini-search",
       "description": "Gemini CLIのGoogle Search Grounding機能でWeb検索を実行",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "search",
-      "keywords": [
-        "gemini",
-        "search",
-        "google",
-        "web"
-      ],
-      "tags": [
-        "search",
-        "gemini"
-      ]
+      "source": "./plugins/gemini-search"
     },
     {
       "name": "prompt-optimization",
-      "source": "./plugins/prompt-optimization",
       "description": "モデル非依存のプロンプト分析・最適化パターン（BP-001〜BP-008）",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "productivity",
-      "keywords": [
-        "prompt",
-        "optimization",
-        "analysis"
-      ],
-      "tags": [
-        "prompt",
-        "optimization"
-      ]
+      "source": "./plugins/prompt-optimization"
     },
     {
       "name": "skill-development",
-      "source": "./plugins/skill-development",
       "description": "Claude Codeプラグイン用スキル作成のベストプラクティス",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "development",
-      "keywords": [
-        "skill",
-        "development",
-        "plugin",
-        "claude-code"
-      ],
-      "tags": [
-        "skill",
-        "development"
-      ]
+      "source": "./plugins/skill-development"
     },
     {
       "name": "terraform-review",
-      "source": "./plugins/terraform-review",
       "description": "Terraformコードの本番デプロイ前レビュー",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "infrastructure",
-      "keywords": [
-        "terraform",
-        "review",
-        "infrastructure",
-        "iac"
-      ],
-      "tags": [
-        "terraform",
-        "review"
-      ]
+      "source": "./plugins/terraform-review"
     },
     {
       "name": "security-scanner",
-      "source": "./plugins/security-scanner",
       "description": "リポジトリ全体のマルウェア・悪意コードパターン検出",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "security",
-      "keywords": [
-        "security",
-        "malware",
-        "scanner",
-        "code-review"
-      ],
-      "tags": [
-        "security",
-        "scanner"
-      ]
+      "source": "./plugins/security-scanner"
     },
     {
       "name": "askme",
-      "source": "./plugins/askme",
       "description": "曖昧さや不確実性がある場合に仮定で進めず明示的に確認するスキル",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "productivity",
-      "keywords": [
-        "clarification",
-        "requirements",
-        "confirmation",
-        "uncertainty"
-      ],
-      "tags": [
-        "clarification",
-        "workflow"
-      ]
+      "source": "./plugins/askme"
     },
     {
       "name": "tech-doc-research",
-      "source": "./plugins/tech-doc-research",
       "description": "要件定義書から必要技術を調査し、セットアップ手順・コード例・ベストプラクティスを含む技術調査ドキュメントを作成",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "research",
-      "keywords": [
-        "tech-docs",
-        "research",
-        "documentation",
-        "requirements"
-      ],
-      "tags": [
-        "research",
-        "documentation"
-      ]
+      "source": "./plugins/tech-doc-research"
     },
     {
       "name": "session-archaeologist",
-      "source": "./plugins/session-archaeologist",
       "description": "Claude Codeの過去の会話ログを発掘・分析し、開発の試行錯誤プロセスやインサイトを構造化して要約する",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "analysis",
-      "keywords": [
-        "session",
-        "history",
-        "analysis",
-        "conversation-log",
-        "archaeology"
-      ],
-      "tags": [
-        "analysis",
-        "history"
-      ]
+      "source": "./plugins/session-archaeologist"
     },
     {
       "name": "streaming-jinarashi",
-      "source": "./plugins/streaming-jinarashi",
-      "description": "AniList APIとPlaywright CLIを活用し、シーズンアニメの配信サービス情報を自動調査・独占配信を特定するツール",
+      "description": "Anime streaming service finder using AniList API and Playwright CLI",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "automation",
-      "keywords": [
-        "anime",
-        "streaming",
-        "anilist",
-        "playwright",
-        "automation"
-      ],
-      "tags": [
-        "anime",
-        "streaming"
-      ]
+      "source": "./plugins/streaming-jinarashi"
     },
     {
       "name": "hasegawa",
-      "source": "./plugins/hasegawa",
       "description": "ステージされていない変更を検出し、適切なコミット粒度の提案からgit commitまでを一貫してアシストするスキル",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "development",
-      "keywords": [
-        "git",
-        "commit",
-        "staging",
-        "version-control"
-      ],
-      "tags": [
-        "git",
-        "workflow"
-      ]
+      "source": "./plugins/hasegawa"
     },
     {
       "name": "python-seifuku",
-      "source": "./plugins/python-seifuku",
       "description": "uv + ruff + mypy + pytest構成のPythonプロジェクト初期セットアップとPostToolUse hooksによるコード品質チェック自動化",
       "version": "1.0.0",
-      "author": {
-        "name": "sniper-fly"
-      },
-      "category": "development",
-      "keywords": [
-        "python",
-        "uv",
-        "ruff",
-        "mypy",
-        "pytest",
-        "setup",
-        "hooks",
-        "code-quality"
-      ],
-      "tags": [
-        "python",
-        "setup"
-      ]
+      "source": "./plugins/python-seifuku"
+    },
+    {
+      "name": "claude-settings-importer",
+      "description": "個人(~/.claude/)またはプロジェクト固有(.claude/)のClaude Code設定をAPM形式のパッケージに変換するスキル",
+      "version": "1.0.0",
+      "source": "./plugins/claude-settings-importer"
     }
   ]
 }

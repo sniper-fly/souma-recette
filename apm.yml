@@ -1,0 +1,77 @@
+name: souma-recette
+version: 1.0.0
+description: "Souma Recette - Claude Code / OpenCode 向けスキル・エージェント・フックのパッケージ集(APM形式)"
+
+marketplace:
+  owner:
+    name: sniper-fly
+    url: https://github.com/sniper-fly
+
+  outputs:
+    claude: {}
+
+  packages:
+    - name: mirariko
+      description: "スキルベースの実装計画書レビュー＆ブラッシュアップの反復ワークフロー"
+      source: ./plugins/mirariko
+      version: 1.0.0
+
+    - name: gemini-search
+      description: "Gemini CLIのGoogle Search Grounding機能でWeb検索を実行"
+      source: ./plugins/gemini-search
+      version: 1.0.0
+
+    - name: prompt-optimization
+      description: "モデル非依存のプロンプト分析・最適化パターン（BP-001〜BP-008）"
+      source: ./plugins/prompt-optimization
+      version: 1.0.0
+
+    - name: skill-development
+      description: "Claude Codeプラグイン用スキル作成のベストプラクティス"
+      source: ./plugins/skill-development
+      version: 1.0.0
+
+    - name: terraform-review
+      description: "Terraformコードの本番デプロイ前レビュー"
+      source: ./plugins/terraform-review
+      version: 1.0.0
+
+    - name: security-scanner
+      description: "リポジトリ全体のマルウェア・悪意コードパターン検出"
+      source: ./plugins/security-scanner
+      version: 1.0.0
+
+    - name: askme
+      description: "曖昧さや不確実性がある場合に仮定で進めず明示的に確認するスキル"
+      source: ./plugins/askme
+      version: 1.0.0
+
+    - name: tech-doc-research
+      description: "要件定義書から必要技術を調査し、セットアップ手順・コード例・ベストプラクティスを含む技術調査ドキュメントを作成"
+      source: ./plugins/tech-doc-research
+      version: 1.0.0
+
+    - name: session-archaeologist
+      description: "Claude Codeの過去の会話ログを発掘・分析し、開発の試行錯誤プロセスやインサイトを構造化して要約する"
+      source: ./plugins/session-archaeologist
+      version: 1.0.0
+
+    - name: streaming-jinarashi
+      description: "Anime streaming service finder using AniList API and Playwright CLI"
+      source: ./plugins/streaming-jinarashi
+      version: 1.0.0
+
+    - name: hasegawa
+      description: "ステージされていない変更を検出し、適切なコミット粒度の提案からgit commitまでを一貫してアシストするスキル"
+      source: ./plugins/hasegawa
+      version: 1.0.0
+
+    - name: python-seifuku
+      description: "uv + ruff + mypy + pytest構成のPythonプロジェクト初期セットアップとPostToolUse hooksによるコード品質チェック自動化"
+      source: ./plugins/python-seifuku
+      version: 1.0.0
+
+    - name: claude-settings-importer
+      description: "個人(~/.claude/)またはプロジェクト固有(.claude/)のClaude Code設定をAPM形式のパッケージに変換するスキル"
+      source: ./plugins/claude-settings-importer
+      version: 1.0.0

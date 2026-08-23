@@ -1,120 +1,91 @@
-# Souma Recette - Claude Code Plugin Marketplace
+# Souma Recette
 
-このリポジトリはClaude Codeのプラグインマーケットプレイスです。複数のプラグインを格納し、チームやコミュニティで共有できます。
+Claude Code / OpenCode など複数のコーディングエージェントで使えるスキル・エージェント・プロンプト・フックのパッケージ集です。[APM (Agent Package Manager)](https://microsoft.github.io/apm/) 形式で管理しています。
 
 > *へこたれている暇なんか一秒もない。だって今オレ新しい技をモノにできるのが面白くて仕方ないんスよ！*
 >
 > — 幸平創真（『食戟のソーマ 弐ノ皿』第12話「魔術師再び」）
 
-## マーケットプレイスの追加方法
+## セットアップ
+
+APM CLI をインストール:
 
 ```bash
-/plugin marketplace add sniper-fly/souma-recette
+brew install microsoft/apm/apm
 ```
 
-## 含まれるプラグイン
+## 個別パッケージのインストール
 
-### askme
-不確実な要件や複数の実装アプローチがある場合に、仮定で進めず明示的にユーザーへ確認を行うスキル
-
-### gemini-search
-Gemini CLIのGoogle Search Grounding機能でWeb検索を実行
-
-### mirariko
-スキルベースの実装計画書レビュー＆ブラッシュアップの反復ワークフロー
-
-### prompt-optimization
-モデル非依存のプロンプト分析・最適化パターン（BP-001〜BP-008）
-
-### security-scanner
-リポジトリ全体のマルウェア・悪意コードパターン検出
-
-### session-archaeologist
-Claude Codeの過去の会話ログを発掘・分析し、開発の試行錯誤プロセスやインサイトを構造化して要約する
-
-### streaming-jinarashi
-AniList APIとPlaywright CLIを活用し、シーズンアニメの配信サービス情報を自動調査・独占配信を特定するツール
-
-### skill-development
-Claude Codeプラグイン用スキル作成のベストプラクティス
-
-### tech-doc-research
-要件定義書から必要技術を調査し、セットアップ手順・コード例・ベストプラクティスを含む技術調査ドキュメントを作成
-
-### python-seifuku
-uv + ruff + mypy + pytest構成のPythonプロジェクト初期セットアップとPostToolUse hooksによるコード品質チェック自動化
-
-### terraform-review
-Terraformコードの本番デプロイ前レビュー
-
-## プラグインのインストール
-
-マーケットプレイスを追加後、個別のプラグインをインストール:
+各パッケージは `plugins/<name>/` に独立した APM パッケージとして格納されています。使いたいものだけを個別にインストールできます:
 
 ```bash
-/plugin install askme@souma-recette
-/plugin install gemini-search@souma-recette
-/plugin install mirariko@souma-recette
-/plugin install prompt-optimization@souma-recette
-/plugin install security-scanner@souma-recette
-/plugin install session-archaeologist@souma-recette
-/plugin install streaming-jinarashi@souma-recette
-/plugin install skill-development@souma-recette
-/plugin install tech-doc-research@souma-recette
-/plugin install python-seifuku@souma-recette
-/plugin install terraform-review@souma-recette
+apm install github.com/sniper-fly/souma-recette -s plugins/terraform-review --target claude
 ```
 
-## 新しいプラグインの追加方法
+ローカルにクローンしている場合はパスで直接指定できます:
 
-1. `plugins/` ディレクトリに新しいプラグインフォルダを作成
-2. `.claude-plugin/plugin.json` を作成（必須）
-3. `commands/`, `agents/`, `skills/`, `hooks/` などのコンポーネントを追加
-4. `.claude-plugin/marketplace.json` にプラグイン情報を追加
-
-### ディレクトリ構成例
-
-```
-plugins/
-└── my-new-plugin/
-    ├── .claude-plugin/
-    │   └── plugin.json      # 必須
-    ├── commands/            # スラッシュコマンド
-    │   └── my-command.md
-    ├── agents/              # エージェント
-    │   └── my-agent.md
-    ├── skills/              # スキル
-    │   └── my-skill/
-    │       └── SKILL.md
-    ├── hooks/               # フック
-    │   └── hooks.json
-    └── .mcp.json            # MCPサーバー設定
+```bash
+apm install ./plugins/terraform-review --target claude
 ```
 
-## plugin.json の例
+`--target` は `claude` の他、`opencode` / `copilot` / `cursor` / `gemini` など APM がサポートする任意のターゲットを指定できます(省略時は検出済みハーネスすべてに展開)。
 
-```json
-{
-  "name": "my-plugin",
-  "description": "プラグインの説明",
-  "version": "1.0.0",
-  "author": {
-    "name": "Author Name",
-    "email": "author@example.com"
-  },
-  "license": "MIT",
-  "keywords": ["keyword1", "keyword2"],
-  "commands": "./commands/",
-  "agents": "./agents/"
-}
+複数パッケージを同時にインストールすると、`mirariko` のようにスキル名をパラメータとして他パッケージのスキルを横断利用するパッケージも機能します:
+
+```bash
+apm install ./plugins/mirariko ./plugins/terraform-review --target claude
 ```
+
+## 含まれるパッケージ
+
+| パッケージ | 内容 |
+|---|---|
+| `askme` | 不確実な要件や複数の実装アプローチがある場合に、仮定で進めず明示的にユーザーへ確認を行うスキル |
+| `claude-settings-importer` | 個人(`~/.claude/`)またはプロジェクト固有(`.claude/`)のClaude Code設定をAPM形式のパッケージに変換するスキル |
+| `gemini-search` | Gemini CLIのGoogle Search Grounding機能でWeb検索を実行 |
+| `hasegawa` | ステージされていない変更を検出し、適切なコミット粒度の提案からgit commitまでを一貫してアシストするスキル |
+| `mirariko` | スキルベースの実装計画書レビュー＆ブラッシュアップの反復ワークフロー |
+| `prompt-optimization` | モデル非依存のプロンプト分析・最適化パターン（BP-001〜BP-008） |
+| `python-seifuku` | uv + ruff + mypy + pytest構成のPythonプロジェクト初期セットアップとPostToolUse hooksによるコード品質チェック自動化 |
+| `security-scanner` | リポジトリ全体のマルウェア・悪意コードパターン検出 |
+| `session-archaeologist` | Claude Codeの過去の会話ログを発掘・分析し、開発の試行錯誤プロセスやインサイトを構造化して要約する |
+| `skill-development` | Claude Codeプラグイン用スキル作成のベストプラクティス |
+| `streaming-jinarashi` | AniList APIとPlaywright CLIを活用し、シーズンアニメの配信サービス情報を自動調査・独占配信を特定するツール |
+| `tech-doc-research` | 要件定義書から必要技術を調査し、セットアップ手順・コード例・ベストプラクティスを含む技術調査ドキュメントを作成 |
+| `terraform-review` | Terraformコードの本番デプロイ前レビュー |
+
+## リポジトリ構成
+
+このリポジトリはAPMの "Multi-plugin marketplace publisher" 構成を採用しています。ルートの `apm.yml` は `marketplace:` ブロックのみを持ち、各パッケージ本体は `plugins/<name>/` 配下に独立して存在します:
+
+```
+plugins/<name>/
+  apm.yml               # パッケージ定義(name/version/description)
+  .apm/
+    skills/<name>/       # SKILL.md + references/, scripts/ など
+    agents/*.agent.md
+    prompts/*.prompt.md
+    hooks/hooks.json
+```
+
+`.apm/` がAPMの正規レイアウトで、`apm install`/`apm compile` がここから各ターゲット(Claude Code, OpenCode, Copilot CLI など)向けの形式に変換します。
+
+## `.claude-plugin/marketplace.json` について
+
+ルートの `apm.yml` の `marketplace:` ブロックから `apm pack` で `.claude-plugin/marketplace.json` を生成しています(このファイルは手で編集せず、`apm pack` で再生成してください)。これはAnthropicのマーケットプレイススキーマと互換な副産物で、`apm marketplace add` / `apm search` / `apm install <pkg>@<marketplace>` によるカタログ検索を可能にするために生成しています。Claude Codeの `/plugin marketplace add` からもこのファイルを認識できますが、各パッケージの実体は `.apm/` 配下に正規化されているため native な `/plugin install` では正しく展開されません。**Claude Codeで利用する場合も上記の `apm install` を使ってください。**
+
+## 新しいパッケージの追加方法
+
+1. `plugins/<name>/` を作成し、`apm.yml`(name/version/description)を追加
+2. `.apm/skills/`, `.apm/agents/`, `.apm/prompts/`, `.apm/hooks/` の該当するディレクトリにprimitiveを追加
+3. ルート `apm.yml` の `marketplace.packages[]` にエントリを追加
+4. `apm marketplace check` で解決確認、`apm pack` で `.claude-plugin/marketplace.json` を再生成
 
 ## 検証
 
-公開前にプラグインを検証:
-
 ```bash
-claude plugin validate .
+apm marketplace check   # 全パッケージのsource/refが解決するか検証
+apm pack                # marketplace.jsonを再生成
 ```
 
 ## ライセンス

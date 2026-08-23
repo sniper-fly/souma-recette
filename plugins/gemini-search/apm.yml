@@ -1,0 +1,3 @@
+name: gemini-search
+version: 1.0.0
+description: "Gemini CLIのGoogle Search Grounding機能でWeb検索を実行"

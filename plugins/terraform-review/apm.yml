@@ -1,0 +1,3 @@
+name: terraform-review
+version: 1.0.0
+description: "Terraformコードの本番デプロイ前レビュー"

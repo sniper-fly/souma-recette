@@ -1,0 +1,3 @@
+name: hasegawa
+version: 1.0.0
+description: "ステージされていない変更を検出し、適切なコミット粒度の提案からgit commitまでを一貫してアシストするスキル"
